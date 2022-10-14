@@ -73,39 +73,3 @@ class MyInfo(APIView):
         my_info = User.objects.filter(username__exact=username)
         serialized_my_info = UserSerializer(my_info, many=True).data
         return Response(serialized_my_info, status=status.HTTP_200_OK)
-
-
-
-
-
-
-
-
-'''
-#my/my_posts
-class MyPostList(APIView):
-    def get(self, request):
-        username = request.user.username
-        user_id = User.objects.values(username__exact=username)['id']
-        my_posts = Post.objects.filter(author__exact=user_id)
-        serialized_my_posts = UserSerializer(my_posts, many=True).data
-        return Response(serialized_my_posts, status=status.HTTP_200_OK)
-
-#my/my_likes
-class MyLikeList(APIView):
-    def get(self, request):
-        username = request.user.username
-        user_id = User.objects.values(username__exact=username)['id']
-        my_likes = Like.objects.filter(username__exact=user_id)
-        serialized_my_likes = UserSerializer(my_likes, many=True).data
-        return Response(serialized_my_likes, status=status.HTTP_200_OK)
-
-#my/my_comments
-class MyCommentList(APIView):
-    def get(self, request):
-        username = request.user.username
-        user_id = User.objects.filter(username__exact=username)['id']
-        my_comments = Comment.objects.filter(author__exact=user_id)
-        serialized_my_comments = UserSerializer(my_comments, many=True).data
-        return Response(serialized_my_comments, status=status.HTTP_200_OK)
-'''
