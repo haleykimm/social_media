@@ -9,10 +9,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', UserSignUpView.as_view()), 
     path('signin/', UserSignInView.as_view()),
-    #path('my/', MyPage.as_view()),
     path('my_info/', MyInfo.as_view()),
-    #path('my/my_posts/', MyPostList.as_view()),
-    #path('my/my_likes/', MyLikeList.as_view()),
-    #path('my/my_comments/', MyCommentList.as_view())
     path('search/', UserSearchList.as_view())
 ]
