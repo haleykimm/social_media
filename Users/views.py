@@ -56,7 +56,7 @@ class UserSearchList2(APIView):
 class UserSearchList(APIView):
     def get(self, request):
         username = request.GET.get('username')
-        if username != None:
+        if not username == None:
             query_result = User.objects.filter(username__icontains=username)
             serialized_query_result = UserSerializer(query_result, many=True).data
             return Response(serialized_query_result, status=status.HTTP_200_OK)
