@@ -4,7 +4,6 @@ from Users.models import User
 from Posting.models import Post
 from Likes.models import Like
 
-
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -17,34 +16,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'password']
-
-
-class UserSearchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'user_posts', 'user_likes']
-
-class MyInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'user_posts', 'user_likes']
-
-class MyPostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'user_posts']
-
-class MyLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'user_likes']
-
-class MyCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'user_comments']
+        fields = ['username', 'email', 'join_date', 'birthday', 'user_posts', 'user_likes', 'user_comments']

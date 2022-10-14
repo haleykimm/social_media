@@ -16,4 +16,5 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "author", "title", "content", "post_comments", "post_likes"]
+        fields = ["id", "author", "title", "content"] #'post_likes', 'post_comments'
+        extra_kwargs = {'post_likes' :{"required": False, "allow_null": True}, 'post_comments': {'required':False, "allow_null":True}}

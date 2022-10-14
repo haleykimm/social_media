@@ -1,5 +1,3 @@
-from optparse import TitledHelpFormatter
-from turtle import title
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -9,24 +7,34 @@ from Posting.permissions import CustomReadOnly
 from Posting.serializers import PostSerializer
 from .models import Post
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.db.models import Q
 
 # Create your views here.
 class PostList(APIView):
     permission_classes = [CustomReadOnly]
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request): 
-        post = Post.objects.all()
-        serialized_post_data = PostSerializer(post, many=True).data
-        return Response(serialized_post_data, status=status.HTTP_200_OK)
+    def get(self, request):
+        if not request.GET.keys():
+            all_posts = Post.objects.all()
+            serialized_all_posts = PostSerializer(all_posts, many=True).data
+            return Response(serialized_all_posts, status=status.HTTP_200_OK)
+        else:
+            for query in request.GET.keys():
+                query_results = Post.objects.filter(title__icontains=request.GET.get('title',''),
+                                                    content__icontains=request.GET.get('content',''),
+                                                    author__username__icontains=request.GET.get('author',''))
+                if query_results:
+                    serialized_query_result = PostSerializer(query_results, many=True).data
+                    return Response(serialized_query_result, status=status.HTTP_200_OK)
+                else: 
+                    return Response({"message":"No post matching the query."}, status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request):
         deserialized_post_data = PostSerializer(data=request.data, context={'request': request})
         if deserialized_post_data.is_valid():
             deserialized_post_data.save()
-            return Response({"message":"정상"}, status=status.HTTP_200_OK)
-        return Response (deserialized_post_data.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":"Posted."}, status=status.HTTP_200_OK)
+        return Response(deserialized_post_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostDetail(APIView):
     permission_classes = [CustomReadOnly]
@@ -51,47 +59,3 @@ class PostDetail(APIView):
         self.check_object_permissions(request, post)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-#search/post?title=title&content=content&author=username
-class PostSearchList(APIView):
-    permission_classes = [CustomReadOnly]
-    authentication_classes = [JWTAuthentication]
-
-    def get(self, request, query):
-        queried_list = get_list_or_404(Post, query=query)
-        serialized_queried_list_data = PostSerializer(queried_list, many=True).data
-        return Response(serialized_queried_list_data, status=status.HTTP_200_OK)
-
-class PostSearchList2(APIView):
-    permission_classes = [CustomReadOnly]
-    authentication_classes = [JWTAuthentication]
-
-#search/post?title=title
-    def get(self, request):
-        title = request.GET.get['title']
-        queried_result = Post.objects.all().filter(title__icontains=title).order_by('updated_at')
-        serialized_queried_result = PostSerializer(queried_result, many=True).data
-        return Response(serialized_queried_result, status=status.HTTP_200_OK)
-
-#search/post?content=content
-    def get(self, request):
-        content = request.GET.get['content']
-        queried_result = Post.objects.all().filter(content__icontains=content).order_by('updated_at')
-        serialized_queried_result = PostSerializer(queried_result, many=True).data
-        return Response(serialized_queried_result, status=status.HTTP_200_OK)
-
-#search/post?title=title&content=content
-    def get(self, request):
-        title = request.GET.get['title']
-        content = request.GET.get['content']
-        queried_result = Post.objects.all().filter(Q(title__icontains=title)|Q(content__icontains=content)).order_by('updated_at')
-        serialized_queried_result = PostSerializer(queried_result, many=True).data
-        return Response(serialized_queried_result, status=status.HTTP_200_OK)
-
-#search/post?author=username
-    def get(self, request):
-        username = request.GET.get['author']
-        queried_result = Post.objects.all().filter(author__icontains=username).order_by('updated_at')
-        serialized_queried_result = PostSerializer(queried_result, many=True).data
-        return Response(serialized_queried_result, status=status.HTTP_200_OK)
