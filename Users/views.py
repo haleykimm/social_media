@@ -63,7 +63,6 @@ class UserSearchList(APIView):
         else:
             return Response({"message":"No user matching the query."}, status=status.HTTP_204_NO_CONTENT)
 
-
 class MyInfo(APIView):
     permission_classes = [CustomReadOnly]
     authentication_classes = [JWTAuthentication]

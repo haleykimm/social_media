@@ -10,5 +10,5 @@ urlpatterns = [
     path('signup/', UserSignUpView.as_view()), 
     path('signin/', UserSignInView.as_view()),
     path('my_info/', MyInfo.as_view()),
-    path('user_search/', UserSearchList.as_view())
+    path('search/user', UserSearchList.as_view())
 ]
