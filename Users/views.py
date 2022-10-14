@@ -44,23 +44,14 @@ class UserSignInView(APIView):
                 status=status.HTTP_200_OK)
             return Response({"error": "실패"}, status=status.HTTP_400_BAD_REQUEST)
 
-
-'''
-class UserSearchList2(APIView):
-    def get(self, request, query):
-        username = request.GET.get['username']
-        user_list = get_list_or_404(User, query=username)
-        serialized_user_list_data = UserSearchSerializer(user_list, many=True).data
-        return Response(serialized_user_list_data, status=status.HTTP_200_OK)
-'''
 class UserSearchList(APIView):
     def get(self, request):
         username = request.GET.get('username')
-        if not username == None:
-            query_result = User.objects.filter(username__icontains=username)
-            serialized_query_result = UserSerializer(query_result, many=True).data
+        query_result = User.objects.filter(username__icontains=username)
+        if query_result:
+            serialized_query_result = UserSerializer(query_result, many=True).data 
             return Response(serialized_query_result, status=status.HTTP_200_OK)
-        else:
+        else: 
             return Response({"message":"No user matching the query."}, status=status.HTTP_204_NO_CONTENT)
 
 class MyInfo(APIView):
@@ -72,3 +63,17 @@ class MyInfo(APIView):
         my_info = User.objects.filter(username__exact=username)
         serialized_my_info = UserSerializer(my_info, many=True).data
         return Response(serialized_my_info, status=status.HTTP_200_OK)
+
+
+
+
+
+
+'''
+class UserSearchList2(APIView):
+    def get(self, request, query):
+        username = request.GET.get['username']
+        user_list = get_list_or_404(User, query=username)
+        serialized_user_list_data = UserSearchSerializer(user_list, many=True).data
+        return Response(serialized_user_list_data, status=status.HTTP_200_OK)
+'''
