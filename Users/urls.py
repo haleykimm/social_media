@@ -14,5 +14,5 @@ urlpatterns = [
     #path('my/my_posts/', MyPostList.as_view()),
     #path('my/my_likes/', MyLikeList.as_view()),
     #path('my/my_comments/', MyCommentList.as_view())
-    path('', UserSearchList.as_view())
+    path('search/', UserSearchList.as_view())
 ]
