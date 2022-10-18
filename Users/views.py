@@ -44,6 +44,7 @@ class UserSignInView(APIView):
                 status=status.HTTP_200_OK)
             return Response({"error": "실패"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserSearchList(APIView):
     def get(self, request):
         username = request.GET.get('username')
@@ -53,6 +54,7 @@ class UserSearchList(APIView):
             return Response(serialized_query_result, status=status.HTTP_200_OK)
         else: 
             return Response({"message":"No user matching the query."}, status=status.HTTP_204_NO_CONTENT)
+
 
 class MyInfo(APIView):
     permission_classes = [CustomReadOnly]

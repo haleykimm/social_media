@@ -24,8 +24,8 @@ class PostList(APIView):
                                                     content__icontains=request.GET.get('content',''),
                                                     author__username__icontains=request.GET.get('author',''))
                 if query_results:
-                    serialized_query_result = PostSerializer(query_results, many=True).data
-                    return Response(serialized_query_result, status=status.HTTP_200_OK)
+                    serialized_query_results = PostSerializer(query_results, many=True).data
+                    return Response(serialized_query_results, status=status.HTTP_200_OK)
                 else: 
                     return Response({"message":"No post matching the query."}, status=status.HTTP_204_NO_CONTENT)
 

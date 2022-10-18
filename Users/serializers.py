@@ -3,6 +3,7 @@ from rest_framework import serializers
 from Users.models import User
 from Posting.models import Post
 from Likes.models import Like
+from django.db.models.fields.related import RelatedField
 
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +18,11 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return user
 
 class UserSerializer(serializers.ModelSerializer):
+    user_posts = serializers.SerializerMethodField()
+
+    def get_user_posts(self, obj):
+        return obj.user_posts.values('title')
+
     class Meta:
         model = User
         fields = ['username', 'email', 'join_date', 'birthday', 'user_posts', 'user_likes', 'user_comments']
