@@ -18,11 +18,11 @@ class CommentList(APIView):
         postId = request.GET.get('postId')
         post = get_object_or_404(Post, pk=postId) # 없는 포스트에 대해서는 응답하지 않음
         comment = Comment.objects.filter(post=post)
-        serialized_comment_data = self.serializer_class(comment, many=True).data
+        serialized_comment_data = CommentSerializer(comment, many=True).data
         return Response(serialized_comment_data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        deserialized_comment_data = CommentSerializer(data=request.data, context={'context': request})
+        deserialized_comment_data = CommentSerializer(data=request.data, context={'request': request})
         if deserialized_comment_data.is_valid():
             deserialized_comment_data.save()
             return Response({"Message":"Comment posted."}, status=status.HTTP_200_OK)

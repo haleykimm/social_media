@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Post
+from Comments.serializers import CommentSerializer
 
 class PostSerializer(serializers.ModelSerializer):
+    post_comments = CommentSerializer(many=True, required=False)
     author = serializers.SerializerMethodField()
-
+    like = serializers.SerializerMethodField()
+    
     def get_author(self, obj):
         return obj.author.username
-
-    like = serializers.SerializerMethodField()
 
     def get_like(self, obj):
         return obj.like.values('username')
