@@ -7,6 +7,11 @@ class PostSerializer(serializers.ModelSerializer):
     def get_author(self, obj):
         return obj.author.username
 
+    like = serializers.SerializerMethodField()
+
+    def get_like(self, obj):
+        return obj.like.values('username')
+
     def create(self, validated_data):
         user = self.context.get("request").user
         post = Post(**validated_data)
@@ -16,5 +21,5 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "author", "title", "content", "post_likes", "post_comments"]
-        extra_kwargs = {'post_likes' :{"required": False, "allow_null": True}, "post_comments": {"required":False, "allow_null":True}}
+        fields = ["id", "author", "title", "content", "like", "post_comments"]
+        extra_kwargs = {'like' :{"required": False, "allow_null": True}, "post_comments": {"required":False, "allow_null":True}}

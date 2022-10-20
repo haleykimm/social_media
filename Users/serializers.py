@@ -2,8 +2,6 @@ from xml.etree.ElementTree import Comment
 from rest_framework import serializers
 from Users.models import User
 from Posting.models import Post
-from Likes.models import Like
-from django.db.models.fields.related import RelatedField
 
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:

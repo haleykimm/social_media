@@ -7,7 +7,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_author(self, obj):
         return obj.author.username
 
-    def create(self, validated_data): 
+    def create(self, validated_data): #comment 객체 생성
         user = self.context.get('request').user
         comment = Comment(**validated_data)
         comment.author = user

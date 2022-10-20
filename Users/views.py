@@ -11,7 +11,6 @@ from Users.serializers import UserSignUpSerializer, UserSerializer
 from Posting.permissions import CustomReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from Posting.models import Post
-from Likes.models import Like
 from Comments.models import Comment
 
 # Create your views here.

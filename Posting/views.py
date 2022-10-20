@@ -42,13 +42,13 @@ class PostDetail(APIView):
 
     def get(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
-        serialized_post_data = self.PostSerializer(post).data
+        serialized_post_data = PostSerializer(post).data
         return Response(serialized_post_data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         self.check_object_permissions(request, post)
-        serialized_post_data = self.PostSerializer(post, data=request.data)
+        serialized_post_data = PostSerializer(post, data=request.data)
         if serialized_post_data.is_valid():
             serialized_post_data.save()
             return Response(serialized_post_data.data)
@@ -59,3 +59,13 @@ class PostDetail(APIView):
         self.check_object_permissions(request, post)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class LikeDetail(APIView):
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if request.user in post.like.all():
+            post.like.remove(request.user)
+            return Response({'message':'Like cancelled.'}, status=status.HTTP_200_OK)
+        else: 
+            post.like.add(request.user)
+            return Response({'message': 'Post liked.'}, status=status.HTTP_200_OK)

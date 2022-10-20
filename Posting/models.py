@@ -9,6 +9,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    like = models.ManyToManyField(User, related_name="user_likes")
 
     def __str__(self):
         return self.title

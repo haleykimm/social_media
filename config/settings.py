@@ -18,7 +18,6 @@ __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,8 +48,7 @@ INSTALLED_APPS = [
     'Posting',
     'Users',
     'Comments',
-    'corsheaders',
-    'Likes'
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
