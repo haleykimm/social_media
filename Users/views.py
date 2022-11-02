@@ -69,7 +69,6 @@ class MyInfo(APIView):
 
 
 
-
 '''
 class UserSearchList2(APIView):
     def get(self, request, query):

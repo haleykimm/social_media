@@ -19,7 +19,7 @@ class CustomReadOnly(BasePermission):
             return True
         elif not user.is_authenticated:
             response = {
-                "detail": "서비스를 이용하기 위해 로그인 해주세요.",
+                "detail": "Please sign in.",
             }
             raise GenericAPIException(status_code=status.HTTP_401_UNAUTHORIZED, detail=response)
         return False
